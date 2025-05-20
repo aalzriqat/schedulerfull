@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SchedulerApp Wiki</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f9f9f9;
+    }
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid #ccc;
+      margin-bottom: 20px;
+    }
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      background: #e0e0e0;
+      border: 1px solid #ccc;
+      border-bottom: none;
+    }
+    .tab.active {
+      background: #fff;
+      font-weight: bold;
+    }
+    .tab-content {
+      display: none;
+      background: #fff;
+      padding: 20px;
+      border: 1px solid #ccc;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    h2 {
+      margin-top: 0;
+    }
+    code {
+      background-color: #f4f4f4;
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 10px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>SchedulerApp Documentation</h1>
+
+  <div class="tabs">
+    <div class="tab active" onclick="openTab('user')">End User Overview</div>
+    <div class="tab" onclick="openTab('dev')">Developer & Tech Details</div>
+  </div>
+
+  <div id="user" class="tab-content active">
+    <h2>Welcome to SchedulerApp!</h2>
+    <p><strong>SchedulerApp</strong> is a mobile-first app designed to simplify and streamline employee scheduling, swap requests, leave tracking, and more.</p>
+
+    <h3>What You Can Do</h3>
+    <ul>
+      <li><strong>Employees:</strong>
+        <ul>
+          <li>View your weekly schedule</li>
+          <li>Submit leave requests and track their status</li>
+          <li>Request shift swaps and respond to incoming swap requests</li>
+          <li>Set your shift and time-off preferences</li>
+          <li>View company news and updates</li>
+          <li>Track personal shift analytics</li>
+        </ul>
+      </li>
+      <li><strong>Admins:</strong>
+        <ul>
+          <li>Upload and manage employee schedules</li>
+          <li>Approve/reject leave and swap requests</li>
+          <li>Post important news and announcements</li>
+          <li>Monitor staff preferences and availability</li>
+          <li>View analytics for planning and staffing insights</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>How It Works</h3>
+    <p>The app automatically adjusts content based on your role (Admin or Employee). You'll see only the features you need.</p>
+
+    <h3>Notifications</h3>
+    <p>Stay updated with alerts on schedule changes, approved requests, and more.</p>
+
+    <h3>Security</h3>
+    <p>Your data is protected using secure login and session handling mechanisms.</p>
+  </div>
+
+  <div id="dev" class="tab-content">
+    <h2>Developer & Technical Overview</h2>
+
+    <h3>1. Framework & Structure</h3>
+    <ul>
+      <li><strong>Framework:</strong> React Native with Expo</li>
+      <li><strong>Navigation:</strong> File-based routing using Expo Router</li>
+      <li><strong>Auth Flow:</strong> Managed via token restoration and role-based route rendering</li>
+    </ul>
+
+    <h3>2. Layout & Routing</h3>
+    <pre><code>
+- /app/_layout.tsx: Sets global providers (Redux, Theme)
+- /app/NavigationController.tsx: Auth checks, routing to /auth or /app
+- /app/(auth): Stack for login/register
+- /app/(app)/(tabs)/(employee): Tabs for employees
+- /app/(app)/(tabs)/(admin): Tabs for admins
+    </code></pre>
+
+    <h3>3. Redux State Management</h3>
+    <p>Store is centralized in <code>store.js</code>, includes slices for:</p>
+    <ul>
+      <li><code>authSlice</code> – Auth flow & user info</li>
+      <li><code>employeeScheduleSlice</code> – Schedule data</li>
+      <li><code>leaveSlice</code>, <code>newsSlice</code>, <code>notificationSlice</code></li>
+      <li><code>preferenceSlice</code>, <code>profileSlice</code>, <code>swapSlice</code>, <code>analyticsSlice</code></li>
+    </ul>
+
+    <h3>4. API Interaction</h3>
+    <p>Axios-based services in <code>apiService.ts</code> handle all backend communication with token interceptors.</p>
+    <p>Operations include:</p>
+    <ul>
+      <li>Auth: <code>loginUser</code>, <code>registerUserApi</code></li>
+      <li>Schedule: <code>getEmployeeSchedule</code>, <code>uploadScheduleDataAdmin</code></li>
+      <li>Swaps, Preferences, Leave, News, Notifications, Analytics</li>
+    </ul>
+
+    <h3>5. Feature Status</h3>
+    <ul>
+      <li><strong>Complete:</strong> Auth, navigation, profile, schedule view, swap system, leave requests</li>
+      <li><strong>In Progress:</strong> Password change backend, backend sync for preference/leave updates</li>
+      <li><strong>Planned:</strong> Mark notifications as read, full backend API alignment, test coverage, enhanced error UX</li>
+    </ul>
+
+    <h3>6. Known Technical Issues</h3>
+    <ul>
+      <li>Several TODOs in <code>apiService.ts</code> awaiting backend route confirmation</li>
+      <li>Need proper backend handling for cancellation and updates</li>
+      <li>No current test suite (unit or integration)</li>
+      <li>Notifications schema verification with backend pending</li>
+    </ul>
+
+    <h3>7. Recommendations</h3>
+    <ul>
+      <li>Align all backend routes and expected structures</li>
+      <li>Implement automated testing strategy</li>
+      <li>Enhance UX for error handling</li>
+      <li>Document backend APIs and expected payloads</li>
+    </ul>
+  </div>
+
+  <script>
+    function openTab(tabId) {
+      const tabs = document.querySelectorAll('.tab');
+      const contents = document.querySelectorAll('.tab-content');
+      tabs.forEach(tab => tab.classList.remove('active'));
+      contents.forEach(content => content.classList.remove('active'));
+      document.querySelector('.tab.' + tabId)?.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
+  </script>
+</body>
+</html>
